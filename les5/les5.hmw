@@ -1,0 +1,46 @@
+# Импорт нужного модуля для создания абстрактных классов
+from abc import ABC, abstractmethod
+
+# Абстрактный класс — это как шаблон
+class PaymentMethod(ABC):
+    @abstractmethod
+    def pay(self, amount):
+        """Произвести оплату на указанную сумму"""
+        pass
+
+    @abstractmethod
+    def validate_payment(self):
+        """Проверка возможности оплаты"""
+        pass
+
+
+# Подкласс, который реализует методы из шаблона
+class CreditCardPayment(PaymentMethod):
+    def init(self, card_number, is_valid=True):
+        self.card_number = card_number
+        self.is_valid = is_valid  # например, карта действительна
+
+    def pay(self, amount):
+        if self.validate_payment():
+            print(f"✅ Оплата прошла: {amount}₽ списано с карты {self.card_number}")
+        else:
+            print("❌ Ошибка: карта недействительна!")
+
+    def validate_payment(self):
+        return self.is_valid
+
+
+# =============================
+# Пример использования (input-output)
+# =============================
+print("=== Пример оплаты с помощью CreditCardPayment ===")
+
+# Ввод данных пользователя
+card = input("Введите номер карты: ")
+amount = float(input("Введите сумму для оплаты: "))
+
+# Создаём объект класса оплаты
+payment = CreditCardPayment(card_number=card)
+
+# Пытаемся оплатить
+payment.pay(amount)#
